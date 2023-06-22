@@ -16,7 +16,6 @@ import * as XLSX from 'xlsx';
 import BackSide from './BackSide';
 import FrontSide from './FrontSide';
 import Modal from '../Modal';
-import timeFormatter from '@/utils/timeFormatter';
 
 interface CardContext {
   type: 'edit' | 'add' | 'delete' | null;
@@ -110,7 +109,23 @@ const RoomCard: FC<Props> = memo(
     const [recording, setRecording] = useState(false);
     const [timeDelta, setTimeDelta] = useState<RecordTime[]>([]);
 
-    const selisih = dataUpdatedAt - Number(timestamp.pop());
+    const timeFormatter = (timestamp: number) => {
+      const date = new Date(timestamp);
+
+      const formatting = (time: number) => {
+        return time >= 0 && time <= 9 ? '0' + time : time;
+      };
+
+      const hour = formatting(date.getHours());
+      const minute = formatting(date.getMinutes());
+      const second = formatting(date.getSeconds());
+      const milisecond = formatting(date.getMilliseconds());
+
+      return `${hour}:${minute}:${second}.${milisecond}`;
+    };
+
+    const timestampLast = timestamp.pop() ?? 0;
+    const selisih = dataUpdatedAt - timestampLast;
 
     useEffect(() => {
       let intervalId: NodeJS.Timeout | undefined;
@@ -136,12 +151,12 @@ const RoomCard: FC<Props> = memo(
           ...prev,
           {
             sent: {
-              timestamp: Number(timestamp.pop()),
-              formatted: timeFormatter(Number(timestamp.pop()), true)
+              timestamp: timestampLast,
+              formatted: timeFormatter(timestampLast)
             },
             received: {
               timestamp: dataUpdatedAt,
-              formatted: timeFormatter(dataUpdatedAt, true)
+              formatted: timeFormatter(dataUpdatedAt)
             },
             diff: selisih
           }

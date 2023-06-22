@@ -9,7 +9,7 @@ const timeFormatter = (timestamp: number, withSeconds: boolean) => {
   const min = formatting(date.getMinutes());
   const sec = formatting(date.getSeconds());
 
-  return withSeconds ? hour + ':' + min + ':' + sec : hour + ':' + min;
+  return withSeconds ? `${hour}:${min}:${sec}` : `${hour}:${min}`;
 };
 
 export default timeFormatter;
