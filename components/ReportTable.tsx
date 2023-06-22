@@ -87,7 +87,7 @@ const ReportTable: FC<ReportTableProps> = ({
                     {nilai.spo2}
                   </td>
                   <td className='flex w-full items-center justify-center'>
-                    {nilai.temp}
+                    {Number(nilai.temp.toFixed(2))}
                   </td>
                 </tr>
               ))}

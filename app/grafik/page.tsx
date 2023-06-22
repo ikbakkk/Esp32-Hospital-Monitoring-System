@@ -10,23 +10,16 @@ const Grafik = () => {
   const { data, isLoading } = useDatabaseValue<User[]>(['userId'], mainPathRef);
 
   const dataFormatter = (data: User[] | undefined) => {
-    let result;
-    if (data !== undefined) {
-      result = data.map(data => {
-        const nama = data.nama;
-        const beatArr = Object.values(data.nilai).map(nilai => nilai.beat);
-        const spo2Arr = Object.values(data.nilai).map(nilai => nilai.spo2);
-        const tempArr = Object.values(data.nilai).map(nilai => nilai.temp);
-
-        return {
-          nama: nama,
-          beat: beatArr[beatArr.length - 1],
-          spo2: spo2Arr[spo2Arr.length - 1],
-          temp: tempArr[tempArr.length - 1]
-        };
-      });
+    if (data === undefined) {
+      return;
     }
-    return result;
+
+    return data.map(({ nama, nilai }) => {
+      const { beat, spo2 } = Object.values(nilai).slice(-1)[0];
+      const temp = Number(Object.values(nilai).slice(-1)[0].temp.toFixed(2));
+
+      return { nama, beat, spo2, temp };
+    });
   };
 
   return (

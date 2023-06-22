@@ -7,7 +7,7 @@ import { useDatabaseValue } from '@react-query-firebase/database';
 import RoomCard from '@/components/RoomCard/RoomCard';
 
 export default function Home() {
-  const { data, isLoading } = useDatabaseValue<User[]>(
+  const { data, isLoading, dataUpdatedAt } = useDatabaseValue<User[]>(
     ['userId'],
     mainPathRef,
     { subscribe: true }
@@ -28,6 +28,7 @@ export default function Home() {
                 id={index}
                 dataUser={datum}
                 isLoading={isLoading}
+                dataUpdatedAt={dataUpdatedAt}
               />
             ))}
           </div>

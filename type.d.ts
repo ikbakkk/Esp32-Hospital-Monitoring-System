@@ -13,10 +13,9 @@ export interface User {
 }
 
 export interface NilaiArr {
-  [key: number]: {
-    beat: number;
-    spo2: number;
-    temp: number;
-    timestamp: number;
-  };
+  beat: number;
+  spo2: number;
+  temp: number;
+  timestamp: number;
+  [key: string]: number;
 }

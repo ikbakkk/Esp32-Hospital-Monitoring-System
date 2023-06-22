@@ -73,7 +73,7 @@ const FrontSide: FC<Props> = ({
         id='card-content-body'
         className='h-full w-full gap-1 rounded-b-xl'>
         <div className='flex h-1/4 items-center justify-center text-center text-lg'>
-          <h3>{nama}</h3>
+          <h3 className='capitalize'>{nama}</h3>
         </div>
         <div className='h-3/4'>
           <div className='grid grid-rows-3 items-center gap-4 px-3'>

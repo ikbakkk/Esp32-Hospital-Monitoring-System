@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { FC } from 'react';
 import LineSeriesChart from '../LineChart';
 import { NilaiArr } from '@/type';
@@ -8,8 +7,9 @@ interface Props {
   icon: React.ReactNode;
   numberArr: number[];
   unit: string;
-  nilai: NilaiArr;
+  nilai: NilaiArr[];
   dataKeyY: string;
+  customDomain?: [(dataMin: number) => number, number];
 }
 
 const DetailReading: FC<Props> = ({
@@ -18,7 +18,8 @@ const DetailReading: FC<Props> = ({
   numberArr,
   unit,
   nilai,
-  dataKeyY
+  dataKeyY,
+  customDomain
 }) => {
   return (
     <div className='flex h-64 flex-row gap-x-4'>
@@ -26,7 +27,7 @@ const DetailReading: FC<Props> = ({
         <h1>{title}</h1>
         <>{icon}</>
         <p>
-          {_.last(numberArr)} {unit}
+          {numberArr.pop()} {unit}
         </p>
       </div>
       <div className='flex h-full w-[70%] items-center rounded-xl outline outline-title'>
@@ -38,7 +39,8 @@ const DetailReading: FC<Props> = ({
           fillColor='#41444B'
           unit={` ${unit}`}
           lineName={title}
-          tickStep={5}
+          tickStep={title === 'Temperature' ? 0.5 : 5}
+          customDomain={customDomain}
         />
       </div>
     </div>

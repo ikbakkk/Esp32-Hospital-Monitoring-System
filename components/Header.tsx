@@ -1,9 +1,8 @@
-'use client';
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { TbHeartRateMonitor } from 'react-icons/tb';
+import Clock from './Clock';
 
 const nav = [
   {
@@ -24,7 +23,7 @@ const Header = () => {
   const path = usePathname();
 
   return (
-    <header className='fixed z-40 w-full bg-title px-3 py-2 text-white'>
+    <header className='fixed z-40 w-full flex items-center justify-between bg-title px-3 py-2 text-white'>
       <section className='flex items-center gap-10'>
         <TbHeartRateMonitor size={32} />
         <nav>
@@ -44,7 +43,7 @@ const Header = () => {
           </ul>
         </nav>
       </section>
-      <section></section>
+      {/* <section>{<Clock />}</section> */}
     </header>
   );
 };

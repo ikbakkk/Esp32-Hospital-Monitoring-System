@@ -42,7 +42,7 @@ const BackSide: FC<Props> = ({
     }
     const maxData = _.max(data);
     const minData = _.min(data);
-    const avgData = _.round(_.mean(data), 2).toString();
+    const avgData = Number(_.round(_.mean(data), 2).toFixed(1));
 
     return { maxData, avgData, minData };
   };
@@ -85,7 +85,7 @@ const BackSide: FC<Props> = ({
         id='card-content-body'
         className='h-full w-full gap-1 rounded-b-xl'>
         <div className='flex h-1/4 items-center justify-center text-center text-lg'>
-          <h3>{nama}</h3>
+          <h3 className='capitalize'>{nama}</h3>
         </div>
         <table className='flex h-3/4 justify-center'>
           <tbody className='h-full'>

@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { CSVLink } from 'react-csv';
 import * as XLSX from 'xlsx';
 import timeFormatter from '@/utils/timeFormatter';
 import dateFormatter from '@/utils/dateFormatter';
@@ -32,11 +31,11 @@ const DownloadButton: FC<Props> = ({ nilai, name, title, roomNumber }) => {
   const remappedNilai = nilai.map(n => ({
     Beat: n.beat,
     Spo2: n.spo2,
-    Temperature: n.temp,
+    Temperature: Number(n.temp.toFixed(2)),
     Timestamp: timestampFormatter(n.timestamp)
   }));
 
-  const exportToXlsx = (nilai: Nilai[]) => {
+  const exportToXlsx = () => {
     const worksheet = XLSX.utils.json_to_sheet(remappedNilai);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
@@ -46,7 +45,7 @@ const DownloadButton: FC<Props> = ({ nilai, name, title, roomNumber }) => {
   return (
     <button
       className='flex flex-row items-center gap-3 rounded-lg p-2 font-semibold duration-200 hover:bg-title/20 active:scale-95'
-      onClick={() => exportToXlsx(nilai)}>
+      onClick={exportToXlsx}>
       <HiOutlineDownload className='download-button' size={22} title={title} />
       <p>{title}</p>
     </button>

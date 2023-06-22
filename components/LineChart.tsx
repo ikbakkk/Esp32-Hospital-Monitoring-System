@@ -11,9 +11,19 @@ import {
 } from 'recharts';
 
 import timeFormatter from '@/utils/timeFormatter';
+import { NilaiArr } from '@/type';
 
 interface Props {
-  [key: string]: any;
+  data: NilaiArr[];
+  dataKeyX: string;
+  dataKeyY: string;
+  customDomain?: [(dataMin: number) => number, number];
+  fillColor: string;
+  lineName: string;
+  tickStep: number;
+  rangeLimit?: [number, number];
+  syncId: string;
+  unit: string;
 }
 
 const LineSeriesChart: FC<Props> = ({
@@ -24,32 +34,26 @@ const LineSeriesChart: FC<Props> = ({
   fillColor,
   unit,
   lineName,
-  valueFormatter,
-  fixedDomain,
-  fixedTicks,
+  customDomain,
   tickStep,
   rangeLimit
 }) => {
   const calculateTicks = (
-    step = 5,
+    tickStep: number,
     dataRange = rangeLimit || [0, Number.POSITIVE_INFINITY]
   ) => {
-    const dataMin = Math.min.apply(Math, data);
-    const dataMax = fixedDomain ? fixedDomain[1] : Math.max.apply(Math, data);
-    let start = Math.max(dataRange[0], Math.floor(dataMin / step) * step);
-    let end = Math.min(dataRange[1], Math.ceil(dataMax / step) * step);
-    return range(start, end + 1, step);
-  };
-
-  const timeLabelFormatter = (value: any) => {
-    if (isNaN(value)) {
-      return value;
-    }
-    return timeFormatter(value, false);
-  };
-
-  const valueLabelFormatter = (value: any) => {
-    return valueFormatter ? valueFormatter(value) : value;
+    const allData = data.map(d => d[dataKeyY]);
+    const dataMin = Math.min(...allData);
+    const dataMax = customDomain ? customDomain[1] : Math.max(...allData);
+    const start = Math.max(
+      dataRange[0],
+      Math.floor(dataMin / tickStep) * tickStep
+    );
+    const end = Math.min(
+      dataRange[1],
+      Math.ceil(dataMax / tickStep) * tickStep
+    );
+    return range(start, end + 1, tickStep);
   };
 
   return (
@@ -63,25 +67,20 @@ const LineSeriesChart: FC<Props> = ({
         <XAxis
           allowDataOverflow={true}
           dataKey={dataKeyX}
-          interval={'preserveStartEnd'}
-          tickFormatter={timeStr => timeLabelFormatter(timeStr)}
-          // domain={[0, 'dataMax']}
-          // type='number'
+          tickFormatter={timeStr => timeFormatter(timeStr, false).toString()}
+          padding={'gap'}
+          minTickGap={10}
         />
         <YAxis
           type='number'
-          interval='preserveStartEnd'
-          domain={fixedDomain || [(dataMin: any) => dataMin]}
+          domain={customDomain || ['dataMin', 'dataMax']}
           axisLine={false}
           unit={unit}
-          ticks={fixedTicks || calculateTicks(tickStep)}
-          tickFormatter={value => valueLabelFormatter(value)}
-          minTickGap={2}
+          ticks={calculateTicks(tickStep)}
           stroke={fillColor}
         />
         <Tooltip
-          labelFormatter={timeStr => timeLabelFormatter(timeStr)}
-          formatter={value => valueLabelFormatter(value)}
+          labelFormatter={timeStr => timeFormatter(timeStr, true)}
           labelStyle={{ color: fillColor }}
           contentStyle={{
             background: '#fff',
@@ -99,7 +98,7 @@ const LineSeriesChart: FC<Props> = ({
           fill={fillColor}
           dot={false}
           strokeWidth={2}
-          isAnimationActive={true}
+          isAnimationActive={false}
           unit={unit}
         />
       </LineChart>

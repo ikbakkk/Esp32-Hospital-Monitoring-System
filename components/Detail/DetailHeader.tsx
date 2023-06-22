@@ -10,7 +10,7 @@ interface Props {
 const DetailHeader: FC<Props> = ({ name, time }) => {
   return (
     <div className='z-50 mt-7 flex w-full flex-col items-center justify-center rounded-lg bg-white p-5 outline outline-title'>
-      <h3 className='text-lg font-bold md:text-2xl'>{name}</h3>
+      <h3 className='text-lg font-bold md:text-2xl capitalize'>{name}</h3>
       <p>
         <strong>Last Updated:</strong> {dateFormatter(time, true)} |{' '}
         {timeFormatter(time, true)}
