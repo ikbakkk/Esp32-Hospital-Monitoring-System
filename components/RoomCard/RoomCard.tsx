@@ -179,10 +179,16 @@ const RoomCard: FC<Props> = memo(
               </>
             )}
           </div>
-          <button onClick={() => setTimerOn(!timerOn)}>
+          <button
+            className='outline outline-1 rounded-md '
+            onClick={() => setTimerOn(!timerOn)}>
             {timerOn ? 'stop' : 'start'}
           </button>
-          <button onClick={exportToXlsx}>Eksport hasil ukur</button>
+          <button
+            className='outline outline-1 rounded-md '
+            onClick={exportToXlsx}>
+            Eksport hasil ukur
+          </button>
           <p>{timer}</p>
         </div>
         <Modal dialogTitle={dialogTitle} />
