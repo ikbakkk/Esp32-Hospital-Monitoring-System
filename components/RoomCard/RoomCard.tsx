@@ -109,7 +109,7 @@ const RoomCard: FC<Props> = memo(
     const [recording, setRecording] = useState(false);
     const [timeDelta, setTimeDelta] = useState<RecordTime[]>([]);
 
-    const timeFormatter = (timestamp: number) => {
+    const timeFormatter = useCallback((timestamp: number) => {
       const date = new Date(timestamp);
 
       const formatting = (time: number) => {
@@ -122,7 +122,7 @@ const RoomCard: FC<Props> = memo(
       const milisecond = formatting(date.getMilliseconds());
 
       return `${hour}:${minute}:${second}.${milisecond}`;
-    };
+    }, []);
 
     const timestampLast = timestamp.pop() ?? 0;
     const selisih = dataUpdatedAt - timestampLast;
